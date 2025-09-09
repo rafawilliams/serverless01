@@ -1,14 +1,10 @@
-import * as dynamodb from "@aws-sdk/client-dynamodb";
-import {marshall, unmarshall} from "@aws-sdk/util-dynamodb"
 import * as lambda from "aws-lambda";
-import { gateway, createTranslate, exception } from "/opt/nodejs/utils-lambda-layer";
-
+import { gateway, createTranslate, exception, TranslationTable } from "/opt/nodejs/utils-lambda-layer";
 import { ITranslateDbObject, ITranslateRequest, ITranslateResponse } from "@sff/share-types";
 
-
-const ddbClient = new dynamodb.DynamoDBClient({ region: "us-east-1" });
-
 const { TABLE_NAME, TRANSLATION_PARTITION_KEY} = process.env;
+
+const translationTable = new TranslationTable(TABLE_NAME,'id');
 
 export const handler: lambda.APIGatewayProxyHandler = async (event: lambda.APIGatewayProxyEvent,
   context: lambda.Context
@@ -41,11 +37,8 @@ export const handler: lambda.APIGatewayProxyHandler = async (event: lambda.APIGa
       ...body, ...rtnDate };
 
     // Save to DynamoDB
-    const putItemCmd = new dynamodb.PutItemCommand({
-      TableName: TABLE_NAME,
-      Item: marshall(tableObj),
-    });
-    await ddbClient.send(putItemCmd)
+    await translationTable.insert(tableObj);
+    
     return gateway.createSuccessJsonResponse(rtnDate);
 
   } catch (e: any) {
@@ -63,13 +56,7 @@ export const getTranslations: lambda.APIGatewayProxyHandler = async function (
 
   try {
 
-  //get all items from DynamoDB
-  const getAll = new dynamodb.ScanCommand({
-    TableName: TABLE_NAME
-  });
-  const allItems = await ddbClient.send(getAll);
-
-  const items = allItems.Items ? allItems.Items.map((item) => unmarshall(item) as ITranslateDbObject) : [];
+  const items = await translationTable.getAll();
   return gateway.createSuccessJsonResponse(items);
   
   }catch (e: any) {
