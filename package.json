@@ -1,0 +1,22 @@
+{
+  "name": "serverless01",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "frontend-dev": "npm run dev --workspace=apps/frontend",
+    "deploy": "cd infra && cdk deploy -f --require-approval never",
+    "build-util-lambda-layer": "npm run build --workspace=@sff/util-lambda-layer",
+    "watch-util-lambda-layer": "npm run watch --workspace=@sff/util-lambda-layer",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "apps/*",
+    "infra",
+    "packages/**"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.3.1"
+  }
+}

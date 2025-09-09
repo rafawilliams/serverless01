@@ -1,0 +1,9 @@
+{
+  "name": "@sff/share-types",
+  "version": "1.0.0",
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.883.0",
+    "@aws-sdk/util-dynamodb": "^3.883.0"
+  }
+}
