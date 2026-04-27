@@ -5,10 +5,12 @@
   "license": "ISC",
   "author": "",
   "scripts": {
-    "frontend-dev": "npm run dev --workspace=apps/frontend",
-    "deploy": "cd infra && cdk deploy -f --require-approval never",
-    "build-util-lambda-layer": "npm run build --workspace=@sff/util-lambda-layer",
-    "watch-util-lambda-layer": "npm run watch --workspace=@sff/util-lambda-layer",
+    "frontend:dev": "npm run dev --workspace=apps/frontend",
+    "frontend:build": "npm run build --workspace=apps/frontend",
+    "cdk:deploy": "cd infra && cdk deploy -f --require-approval never",
+    "cdK:destroy": "cd infra && cdk destroy -f --require-approval never",
+    "lambda-layer:build-util": "npm run build --workspace=@sff/util-lambda-layer",
+    "lambda-layer:watch-util": "npm run watch --workspace=@sff/util-lambda-layer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "workspaces": [
@@ -17,6 +19,10 @@
     "packages/**"
   ],
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/node": "^24.3.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2"
   }
 }

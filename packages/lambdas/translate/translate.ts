@@ -2,9 +2,9 @@ import * as lambda from "aws-lambda";
 import { gateway, createTranslate, exception, TranslationTable } from "/opt/nodejs/utils-lambda-layer";
 import { ITranslateDbObject, ITranslateRequest, ITranslateResponse } from "@sff/share-types";
 
-const { TABLE_NAME, TRANSLATION_PARTITION_KEY} = process.env;
+const { TRANSLATION_TABLE_NAME, TRANSLATION_PARTITION_KEY} = process.env;
 
-const translationTable = new TranslationTable(TABLE_NAME,'id');
+const translationTable = new TranslationTable(TRANSLATION_TABLE_NAME, TRANSLATION_PARTITION_KEY);
 
 export const handler: lambda.APIGatewayProxyHandler = async (event: lambda.APIGatewayProxyEvent,
   context: lambda.Context
@@ -33,7 +33,7 @@ export const handler: lambda.APIGatewayProxyHandler = async (event: lambda.APIGa
       translatedText: response.TranslatedText || "No translation available",
     }
     const tableObj: ITranslateDbObject = {
-      id: context.awsRequestId,
+      requestId: context.awsRequestId,
       ...body, ...rtnDate };
 
     // Save to DynamoDB

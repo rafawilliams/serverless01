@@ -9,5 +9,5 @@ export type ITranslateResponse = {
 };
 
 export type ITranslateDbObject = ITranslateRequest & ITranslateResponse & {
-    id: string;
+    requestId: string;
 };

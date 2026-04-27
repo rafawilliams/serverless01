@@ -14,5 +14,5 @@ const translateCmd = new clientTranslate.TranslateTextCommand({
     });
 
  const response: clientTranslate.TranslateTextCommandOutput = await translate.send(translateCmd);
-return response;
+ return response;
  }
